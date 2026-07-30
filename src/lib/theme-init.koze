@@ -1,0 +1,13 @@
+<script>
+  // Reads localStorage and applies the user's saved theme before first paint.
+  function initStoredTheme() {
+    if (typeof document === 'undefined' || typeof localStorage === 'undefined') return;
+    try {
+      const stored = localStorage.getItem('kui-theme');
+      if (stored === 'dark') document.documentElement.classList.add('dark');
+      if (stored === 'light') document.documentElement.classList.remove('dark');
+    } catch {}
+  }
+
+  initStoredTheme();
+</script>

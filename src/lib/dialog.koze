@@ -1,0 +1,20 @@
+<script>
+  import { props } from 'koze:component';
+  const {
+    id = 'dialog-' + Math.random().toString(36).substr(2, 9),
+    closedby = 'any',
+    open = false,
+    bind_open = undefined,
+    bind_this = undefined,
+    __kozeOwner = undefined,
+    class: className = ''
+  } = props;
+</script>
+
+<dialog id="{id}" closedby="{closedby}" open={open} data-kui-open-modal={open ? 'true' : undefined} data-k-bind-prop={bind_open ? 'open' : undefined} data-k-bind-expr={bind_open} data-k-bind-this={bind_this} data-k-owner={(bind_open || bind_this) ? __kozeOwner : undefined} class="kui-dialog {className}" data-size={props.data_size}>
+  <div class="kui-dialog__box">
+    <div class="kui-dialog__content">
+      <slot></slot>
+    </div>
+  </div>
+</dialog>

@@ -1,0 +1,28 @@
+<script>
+  import { props } from 'koze:component';
+  const {
+    items = [],
+    ariaLabel = 'Pagination',
+    previousHref = '',
+    nextHref = '',
+    class: className = '',
+  } = props;
+</script>
+
+<nav class={`kui-pagination ${className}`.trim()} aria-label={ariaLabel}>
+  if (previousHref) {
+    <a class="kui-pagination__item" href={previousHref} rel="prev" aria-label="Previous page">Previous</a>
+  }
+  for (const item of items) {
+    if (item.ellipsis) {
+      <span class="kui-pagination__ellipsis" aria-hidden="true">...</span>
+    } else if (item.current) {
+      <a class="kui-pagination__item kui-pagination__item--current" href={item.href} aria-current="page">{item.label}</a>
+    } else {
+      <a class="kui-pagination__item" href={item.href}>{item.label}</a>
+    }
+  }
+  if (nextHref) {
+    <a class="kui-pagination__item" href={nextHref} rel="next" aria-label="Next page">Next</a>
+  }
+</nav>

@@ -1,0 +1,8 @@
+<script>
+  import { props } from 'koze:component';
+  const { class: className = '' } = props;
+</script>
+
+<ol class={`kui-timeline ${className}`.trim()}>
+  <slot></slot>
+</ol>

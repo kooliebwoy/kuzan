@@ -1,0 +1,21 @@
+<script>
+  import { props } from 'koze:component';
+  const {
+    name = 'rating',
+    value = 0,
+    max = 5,
+    ariaLabel = 'Rating',
+    class: className = '',
+  } = props;
+</script>
+
+<fieldset class={`kui-rating ${className}`.trim()} aria-label={ariaLabel}>
+  <legend class="kui-sr-only">{ariaLabel}</legend>
+  for (let item = 1; item <= max; item += 1) {
+    <label class={`kui-rating__item ${item <= Number(value) ? 'kui-rating__item--active' : ''}`.trim()}>
+      <input type="radio" name={name} value={item} checked={Number(value) === item} />
+      <span aria-hidden="true">&#9733;</span>
+      <span class="kui-sr-only">{item}</span>
+    </label>
+  }
+</fieldset>

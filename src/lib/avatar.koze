@@ -1,0 +1,22 @@
+<script>
+  import { props } from 'koze:component';
+  const {
+    src,
+    alt = '',
+    initials = '',
+    size = 'md',
+    status = '',
+    class: className = '',
+  } = props;
+</script>
+
+<span class={`kui-avatar kui-avatar--${size} ${className}`.trim()} data-status={status || undefined}>
+  if (src) {
+    <img src={src} alt={alt} loading="lazy" />
+  } else {
+    <span class="kui-avatar__fallback" aria-hidden={alt ? undefined : 'true'}>{initials}</span>
+    if (alt) {
+      <span class="kui-sr-only">{alt}</span>
+    }
+  }
+</span>

@@ -1,0 +1,22 @@
+<script>
+  import { props } from 'koze:component';
+  const { side = 'start', name = '', time = '', class: className = '' } = props;
+</script>
+
+<li class={`kui-chat__message kui-chat__message--${side} ${className}`.trim()}>
+  <article class="kui-chat__bubble">
+    if (name || time) {
+      <header class="kui-chat__meta">
+        if (name) {
+          <strong>{name}</strong>
+        }
+        if (time) {
+          <time>{time}</time>
+        }
+      </header>
+    }
+    <div class="kui-chat__body">
+      <slot></slot>
+    </div>
+  </article>
+</li>

@@ -1,0 +1,10 @@
+<script>
+  import { props } from 'koze:component';
+  const { class: className = '' } = props;
+</script>
+
+<aside class="kui-sidebar {className}" data-side={props.data_side || 'left'} data-variant={props.data_variant || 'sidebar'} data-collapsible={props.data_collapsible || 'offcanvas'}>
+  <div class="kui-sidebar__inner">
+    <slot></slot>
+  </div>
+</aside>

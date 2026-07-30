@@ -1,0 +1,8 @@
+<script>
+  import { props } from 'koze:component';
+  const { ariaLabel = 'Primary', class: className = '' } = props;
+</script>
+
+<nav class={`kui-dock ${className}`.trim()} aria-label={ariaLabel}>
+  <slot></slot>
+</nav>

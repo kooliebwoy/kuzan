@@ -1,0 +1,32 @@
+<script>
+  import { props } from 'koze:component';
+  const {
+    label = 'Actions',
+    position = 'bottom-end',
+    class: className = '',
+  } = props;
+  const panelId = 'kui-speed-' + Math.random().toString(36).slice(2, 10);
+</script>
+
+<div class={`kui-speed-dial ${className}`.trim()} data-position={position}>
+  <button
+    type="button"
+    class="kui-speed-dial__trigger"
+    commandfor={panelId}
+    command="toggle-popover"
+    aria-haspopup="menu"
+    aria-label={label}
+    style={`anchor-name: --${panelId}`}
+  >
+    <slot name="trigger">+</slot>
+  </button>
+  <div
+    id={panelId}
+    class="kui-speed-dial__menu"
+    popover="auto"
+    role="menu"
+    style={`position-anchor: --${panelId}`}
+  >
+    <slot></slot>
+  </div>
+</div>

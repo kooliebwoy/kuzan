@@ -1,0 +1,12 @@
+<script>
+  import { props } from 'koze:component';
+  const { ariaLabel, vertical = false, class: className = '' } = props;
+</script>
+
+<div
+  class={`kui-join ${vertical ? 'kui-join--vertical' : ''} ${className}`.trim()}
+  role={ariaLabel ? 'group' : undefined}
+  aria-label={ariaLabel}
+>
+  <slot></slot>
+</div>

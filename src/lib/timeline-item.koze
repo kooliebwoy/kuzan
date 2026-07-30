@@ -1,0 +1,16 @@
+<script>
+  import { props } from 'koze:component';
+  const { time = '', title = '', class: className = '' } = props;
+</script>
+
+<li class={`kui-timeline__item ${className}`.trim()}>
+  if (time) {
+    <time class="kui-timeline__time">{time}</time>
+  }
+  <div class="kui-timeline__content">
+    if (title) {
+      <h3>{title}</h3>
+    }
+    <slot></slot>
+  </div>
+</li>

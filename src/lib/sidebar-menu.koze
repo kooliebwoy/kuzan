@@ -1,0 +1,8 @@
+<script>
+  import { props } from 'koze:component';
+  const { class: className = '' } = props;
+</script>
+
+<ul class="kui-sidebar__menu {className}">
+  <slot></slot>
+</ul>

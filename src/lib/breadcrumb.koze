@@ -1,0 +1,10 @@
+<script>
+  import { props } from 'koze:component';
+  const { class: className = '' } = props;
+</script>
+
+<nav class="kui-breadcrumb {className}" aria-label="Breadcrumb">
+  <ol class="kui-breadcrumb__list">
+    <slot></slot>
+  </ol>
+</nav>

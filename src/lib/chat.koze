@@ -1,0 +1,8 @@
+<script>
+  import { props } from 'koze:component';
+  const { ariaLabel = 'Conversation', class: className = '' } = props;
+</script>
+
+<ol class={`kui-chat ${className}`.trim()} aria-label={ariaLabel}>
+  <slot></slot>
+</ol>

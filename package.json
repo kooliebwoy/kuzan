@@ -1,0 +1,30 @@
+{
+  "name": "@kuratchi/kuzan",
+  "version": "0.0.1",
+  "description": "Kuzan UI component library - server-rendered HTML components with scoped CSS",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "exports": {
+    "./styles/theme.css": "./src/styles/theme.css",
+    "./styles/*": "./src/styles/*",
+    "./adapter": "./adapter.ts",
+    "./*": "./src/lib/*"
+  },
+  "files": [
+    "README.md",
+    "LICENSE",
+    "adapter.ts",
+    "src/lib/**/*.koze",
+    "src/styles/**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.0"
+  }
+}
