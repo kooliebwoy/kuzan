@@ -4,6 +4,14 @@
   "description": "Kuzan UI component library - server-rendered HTML components with scoped CSS",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kooliebwoy/kuzan.git"
+  },
+  "homepage": "https://github.com/kooliebwoy/kuzan#readme",
+  "bugs": {
+    "url": "https://github.com/kooliebwoy/kuzan/issues"
+  },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest"
