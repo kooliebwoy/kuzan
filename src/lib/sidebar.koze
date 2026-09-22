@@ -1,10 +1,156 @@
 <script>
   import { props } from 'koze:component';
-  const { class: className = '' } = props;
+  const {
+    class: className = '',
+    side = 'left',
+    variant = 'sidebar',
+    collapsible = 'icon',
+    resizable = true,
+    min_width = 200,
+    max_width = 480,
+    default_width = 260,
+    storage_key = 'kui-sidebar-w',
+    state_storage_key = 'kui-sidebar-state',
+  } = props;
+
+  function initSidebar() {
+    if (typeof document === 'undefined') return;
+    if (window.__kuiSidebarInitialized) return;
+    window.__kuiSidebarInitialized = true;
+
+    // Restore saved width and state on load
+    document.querySelectorAll('.kui-sidebar').forEach((sidebar) => {
+      const storageKey = sidebar.dataset.storageKey || 'kui-sidebar-w';
+      const stateKey = sidebar.dataset.stateStorageKey || 'kui-sidebar-state';
+      try {
+        const savedW = localStorage.getItem(storageKey);
+        if (savedW) {
+          sidebar.style.setProperty('--_sidebar-w', savedW);
+          sidebar.style.width = savedW;
+        }
+        const savedState = localStorage.getItem(stateKey);
+        if (savedState) {
+          sidebar.setAttribute('data-state', savedState);
+          if (savedState === 'collapsed') {
+            sidebar.classList.add('kui-sidebar--collapsed');
+          } else {
+            sidebar.classList.remove('kui-sidebar--collapsed');
+          }
+        }
+      } catch {}
+    });
+
+    // Resize dragging
+    let activeSidebar = null;
+    let startX = 0;
+    let startW = 0;
+    let minW = 200;
+    let maxW = 480;
+    let isRight = false;
+
+    document.addEventListener('mousedown', (e) => {
+      const resizer = e.target.closest('.kui-sidebar__resizer');
+      if (!resizer) return;
+      const sidebar = resizer.closest('.kui-sidebar');
+      if (!sidebar || sidebar.getAttribute('data-state') === 'collapsed') return;
+
+      e.preventDefault();
+      activeSidebar = sidebar;
+      startX = e.clientX;
+      startW = sidebar.getBoundingClientRect().width;
+      minW = parseFloat(sidebar.dataset.minWidth) || 200;
+      maxW = parseFloat(sidebar.dataset.maxWidth) || 480;
+      isRight = sidebar.getAttribute('data-side') === 'right';
+
+      document.body.classList.add('kui-is-resizing');
+      sidebar.classList.add('kui-sidebar--resizing');
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!activeSidebar) return;
+      const delta = isRight ? (startX - e.clientX) : (e.clientX - startX);
+      const newW = Math.min(Math.max(startW + delta, minW), maxW);
+      const widthPx = `${newW}px`;
+      activeSidebar.style.setProperty('--_sidebar-w', widthPx);
+      activeSidebar.style.width = widthPx;
+    });
+
+    const stopResize = () => {
+      if (!activeSidebar) return;
+      document.body.classList.remove('kui-is-resizing');
+      activeSidebar.classList.remove('kui-sidebar--resizing');
+      const storageKey = activeSidebar.dataset.storageKey || 'kui-sidebar-w';
+      try {
+        localStorage.setItem(storageKey, activeSidebar.style.width);
+      } catch {}
+      activeSidebar = null;
+    };
+
+    document.addEventListener('mouseup', stopResize);
+
+    // Double-click resizer resets to default width
+    document.addEventListener('dblclick', (e) => {
+      const resizer = e.target.closest('.kui-sidebar__resizer');
+      if (!resizer) return;
+      const sidebar = resizer.closest('.kui-sidebar');
+      if (!sidebar) return;
+      const defaultW = `${parseFloat(sidebar.dataset.defaultWidth) || 260}px`;
+      sidebar.style.setProperty('--_sidebar-w', defaultW);
+      sidebar.style.width = defaultW;
+      const storageKey = sidebar.dataset.storageKey || 'kui-sidebar-w';
+      try {
+        localStorage.setItem(storageKey, defaultW);
+      } catch {}
+    });
+
+    // Toggle collapse/expand via trigger or collapse buttons
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('.kui-sidebar__trigger, [data-sidebar-trigger], .kui-sidebar-toggle');
+      if (!trigger) return;
+      const sidebar = document.querySelector('.kui-sidebar');
+      if (!sidebar) return;
+
+      e.preventDefault();
+      const currentState = sidebar.getAttribute('data-state') || 'expanded';
+      const nextState = currentState === 'collapsed' ? 'expanded' : 'collapsed';
+      sidebar.setAttribute('data-state', nextState);
+      if (nextState === 'collapsed') {
+        sidebar.classList.add('kui-sidebar--collapsed');
+      } else {
+        sidebar.classList.remove('kui-sidebar--collapsed');
+      }
+      const stateKey = sidebar.dataset.stateStorageKey || 'kui-sidebar-state';
+      try {
+        localStorage.setItem(stateKey, nextState);
+      } catch {}
+    });
+  }
+
+  initSidebar();
 </script>
 
-<aside class="kui-sidebar {className}" data-side={props.data_side || 'left'} data-variant={props.data_variant || 'sidebar'} data-collapsible={props.data_collapsible || 'offcanvas'}>
+<aside
+  class="kui-sidebar {className}"
+  data-side={side || props.data_side || 'left'}
+  data-variant={variant || props.data_variant || 'sidebar'}
+  data-collapsible={collapsible || props.data_collapsible || 'icon'}
+  data-min-width={min_width}
+  data-max-width={max_width}
+  data-default-width={default_width}
+  data-storage-key={storage_key}
+  data-state-storage-key={state_storage_key}
+  style="--_sidebar-w: {default_width}px;"
+>
   <div class="kui-sidebar__inner">
     <slot></slot>
   </div>
+  if (resizable) {
+    <div
+      class="kui-sidebar__resizer"
+      role="separator"
+      aria-orientation="vertical"
+      aria-label="Resize sidebar"
+      tabindex="0"
+    ></div>
+  }
 </aside>

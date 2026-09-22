@@ -5259,7 +5259,8 @@ code[data-size="sm"] {
 
 /* ── Sidebar container ── */
 .kui-sidebar {
-  --_sidebar-w: var(--kui-sidebar-width);
+  --_sidebar-w: var(--kui-sidebar-width, 260px);
+  position: relative;
   width: var(--_sidebar-w);
   min-width: var(--_sidebar-w);
   max-width: var(--_sidebar-w);
@@ -5270,8 +5271,78 @@ code[data-size="sm"] {
   display: flex;
   flex-direction: column;
   height: 100%;
-  transition: width 0.2s ease, min-width 0.2s ease, max-width 0.2s ease;
-  overflow: hidden;
+  transition: width 0.15s ease, min-width 0.15s ease, max-width 0.15s ease;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.kui-sidebar.kui-sidebar--resizing {
+  transition: none !important;
+}
+
+.kui-sidebar__resizer {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  bottom: 0;
+  width: 6px;
+  cursor: col-resize;
+  z-index: 30;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+.kui-sidebar[data-side="right"] .kui-sidebar__resizer {
+  right: auto;
+  left: -3px;
+}
+
+.kui-sidebar__resizer:hover,
+.kui-sidebar--resizing .kui-sidebar__resizer {
+  background: var(--kui-primary, #584cd9);
+}
+
+body.kui-is-resizing,
+body.kui-is-resizing * {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+/* ── Collapsed state (mini tray / icon rail) ── */
+.kui-sidebar[data-state="collapsed"],
+.kui-sidebar.kui-sidebar--collapsed {
+  --_sidebar-w: var(--kui-sidebar-width-icon, 52px) !important;
+  width: var(--_sidebar-w) !important;
+  min-width: var(--_sidebar-w) !important;
+  max-width: var(--_sidebar-w) !important;
+}
+
+.kui-sidebar[data-state="collapsed"] .kui-sidebar__resizer,
+.kui-sidebar.kui-sidebar--collapsed .kui-sidebar__resizer {
+  display: none !important;
+  pointer-events: none;
+}
+
+.kui-sidebar[data-state="collapsed"] .kui-sidebar__inner,
+.kui-sidebar.kui-sidebar--collapsed .kui-sidebar__inner {
+  width: 100% !important;
+  min-width: 0 !important;
+  align-items: center;
+}
+
+.kui-sidebar[data-state="collapsed"] .kui-sidebar__menu-label,
+.kui-sidebar[data-state="collapsed"] .kui-sidebar__group-label,
+.kui-sidebar[data-state="collapsed"] .kui-sidebar__chevron,
+.kui-sidebar[data-state="collapsed"] .kui-sidebar__menu-sub,
+.kui-sidebar[data-state="collapsed"] .kui-sidebar__header-text,
+.kui-sidebar[data-state="collapsed"] .kui-sidebar__footer-text,
+.kui-sidebar.kui-sidebar--collapsed .kui-sidebar__menu-label,
+.kui-sidebar.kui-sidebar--collapsed .kui-sidebar__group-label,
+.kui-sidebar.kui-sidebar--collapsed .kui-sidebar__chevron,
+.kui-sidebar.kui-sidebar--collapsed .kui-sidebar__menu-sub,
+.kui-sidebar.kui-sidebar--collapsed .kui-sidebar__header-text,
+.kui-sidebar.kui-sidebar--collapsed .kui-sidebar__footer-text {
+  display: none !important;
 }
 
 .kui-sidebar[data-side="left"] {
@@ -5289,9 +5360,10 @@ code[data-size="sm"] {
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: var(--kui-sidebar-width);
-  min-width: var(--kui-sidebar-width);
-  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* ── Inset variant — sidebar sits inside a rounded container ── */
